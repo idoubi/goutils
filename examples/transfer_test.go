@@ -6,6 +6,15 @@ import (
 	"github.com/idoubi/goutils"
 )
 
+func ExampleTextEncode() {
+	raw := "你好😝"
+	new := goutils.TextEncode(raw)
+
+	fmt.Println(new)
+
+	// Output: 你好
+}
+
 func ExampleMap2XML() {
 	m := map[string]string{
 		"name":      "mike",
