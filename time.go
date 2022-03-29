@@ -1,6 +1,8 @@
 package goutils
 
 import (
+	"fmt"
+	"math/rand"
 	"strconv"
 	"time"
 )
@@ -25,4 +27,16 @@ func TimeFormat(t time.Time, format ...string) string {
 	}
 
 	return t.Format(f)
+}
+
+// TimeOrderid generate orderid based on current timestamp
+func TimeOrderid() string {
+	now := time.Now()
+	nano := now.UnixNano()
+
+	nows := now.Format("20060102150405")
+	mill := nano % 1e6
+	randNum := rand.Int63n(1000)
+
+	return fmt.Sprintf("%s%d%d", nows, mill, randNum)
 }

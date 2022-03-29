@@ -99,3 +99,37 @@ func (m mdata) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 
 	return e.EncodeToken(start.End())
 }
+
+// StrToKv transfer multi line content to kv options
+func StrToKv(str string) map[string]string {
+	kv := map[string]string{}
+
+	lines := strings.Split(str, "\r\n")
+	for _, line := range lines {
+		if line == "" {
+			continue
+		}
+		arr := strings.SplitN(line, ":", 2)
+		if len(arr) != 2 {
+			continue
+		}
+		kv[arr[0]] = arr[1]
+	}
+
+	return kv
+}
+
+// StrToArr transfer multi line content to array
+func StrToArr(str string) []string {
+	arr := []string{}
+
+	lines := strings.Split(str, "\r\n")
+	for _, line := range lines {
+		if line == "" {
+			continue
+		}
+		arr = append(arr, line)
+	}
+
+	return arr
+}

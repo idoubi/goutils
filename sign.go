@@ -1,7 +1,9 @@
 package goutils
 
 import (
+	"crypto/hmac"
 	"crypto/md5"
+	"crypto/sha256"
 	"encoding/base64"
 	"encoding/hex"
 	"fmt"
@@ -88,4 +90,27 @@ func SortEncodeMapValue(m map[string]string) string {
 	str = strings.Join(arr, "")
 
 	return str
+}
+
+// Sha256SignByKey Sha256方式签名source
+func Sha256SignByKey(key string, source string) string {
+	res := sha256.Sum256([]byte(source + "&key=" + key))
+
+	return hex.EncodeToString(res[:])
+}
+
+// HmacSha256 加密
+func HmacSha256(data string, secret string) string {
+	h := hmac.New(sha256.New, []byte(secret))
+	h.Write([]byte(data))
+
+	return hex.EncodeToString(h.Sum(nil))
+}
+
+// HmacSha256WithBase64 hmac-sha256后使用base64编码
+func HmacSha256WithBase64(data string, secret string) string {
+	h := hmac.New(sha256.New, []byte(secret))
+	h.Write([]byte(data))
+
+	return base64.StdEncoding.EncodeToString(h.Sum(nil))
 }
