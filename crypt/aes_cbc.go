@@ -9,7 +9,8 @@ import (
 
 // AesCbcEncrypt AES_CBC 算法加密
 func AesCbcEncrypt(rawData, key, iv []byte) ([]byte, error) {
-	if len(key) < 16 { // 16位：aes-128；32-位：aes-256
+	keyLen := len(key)
+	if keyLen < 16 || keyLen%16 != 0 { // 16位：aes-128；32-位：aes-256
 		return nil, errors.New("invalid key length")
 	}
 	// 设置默认的初始化向量
@@ -23,7 +24,7 @@ func AesCbcEncrypt(rawData, key, iv []byte) ([]byte, error) {
 	}
 
 	// 填充
-	rawData = Pkcs7Padding(rawData, block.BlockSize())
+	rawData = Pkcs7Padding(rawData, keyLen)
 
 	mode := cipher.NewCBCEncrypter(block, iv)
 	encryptedData := make([]byte, len(rawData))
@@ -35,7 +36,8 @@ func AesCbcEncrypt(rawData, key, iv []byte) ([]byte, error) {
 
 // AesCbcDecrypt AES_CBC 算法解密
 func AesCbcDecrypt(encryptedData, key, iv []byte) ([]byte, error) {
-	if len(key) < 16 { // 16位：aes-128；32-位：aes-256
+	keyLen := len(key)
+	if keyLen < 16 || keyLen%16 != 0 { // 16位：aes-128；32-位：aes-256
 		return nil, errors.New("invalid key length")
 	}
 	// 设置默认的初始化向量
