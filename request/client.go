@@ -151,6 +151,10 @@ func (c *Client) Request(method string, uri string, opts goz.Options) (*Result, 
 		return nil, err
 	}
 
+	if stream := resp.Stream(); stream != nil {
+		return &Result{stream: stream}, err
+	}
+
 	body, err := resp.GetBody()
 
 	if err != nil {

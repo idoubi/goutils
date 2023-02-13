@@ -9,8 +9,9 @@ import (
 
 // Result is the response data from api request
 type Result struct {
-	raw []byte
-	res *gjson.Result
+	raw    []byte
+	stream chan []byte
+	res    *gjson.Result
 }
 
 // NewResult
@@ -26,6 +27,11 @@ func NewResult(data []byte) *Result {
 // Raw get raw data
 func (r *Result) Raw() []byte {
 	return r.raw
+}
+
+// Stream get stream data
+func (r *Result) Stream() chan []byte {
+	return r.stream
 }
 
 // Map convert to map
